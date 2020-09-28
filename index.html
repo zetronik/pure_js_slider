@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="src/favicon.ico">
+  <link rel="stylesheet" href="src/css/slider.css">
+  <title>Pure JavaScript Slider</title>
+</head>
+<body>
+  <div class="container">
+    <div id="slider" class="container__slider">
+
+      <div id="slide" class="slide">
+        <div class="slide-item active">
+          <img src="https://picsum.photos/1200/650?random=1" alt="slide_1">
+        </div>
+        <div class="slide-item">
+          <img src="https://picsum.photos/1200/650?random=2" alt="slide_2">
+        </div>
+        <div class="slide-item">
+          <img src="https://picsum.photos/1200/650?random=3" alt="slide_3">
+        </div>
+        <div class="slide-item">
+          <img src="https://picsum.photos/1200/650?random=4" alt="slide_4">
+        </div>
+        <div class="slide-item">
+          <img src="https://picsum.photos/1200/650?random=5" alt="slide_5">
+        </div>
+      </div>
+
+      <div id="button">
+        <div id="prev">
+          <div class="carousel-control-prev-icon"></div>
+        </div>
+        <div id="next">
+          <div class="carousel-control-next-icon"></div>
+        </div>
+      </div>
+
+      <div class="container__badge"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="src/js/slider.js"></script>
+  <script type="text/javascript">
+    new Slider({
+      app: 'slider',
+      timeout: 0
+    }).init()
+  </script>
+</body>
+</html>
