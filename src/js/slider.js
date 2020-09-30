@@ -1,8 +1,6 @@
 class Slider {
   constructor(settings) {
     this.app = document.getElementById(settings.app)
-    this.left = this.app.querySelector('#prev')
-    this.right = this.app.querySelector('#next')
     this.$slider = this.app.querySelector('#slide')
     this.$slide = this.$slider.querySelectorAll('.slide .slide-item')
     this.timeout = settings.timeout || 0
@@ -29,8 +27,29 @@ class Slider {
   slider(val) {
     this.$slider.style.transform = `translate3d(${-100 * val}%, 0px, 0px)`
   }
+  buttonCreate() {
+    const $button = document.createElement('div')
+    const $prev = document.createElement('div')
+    const $next = document.createElement('div')
+    const $prevIcon = document.createElement('div')
+    const $nextIcon = document.createElement('div')
+    $button.id = 'button'
+    $prev.id = 'prev'
+    $next.id = 'next'
+    $prevIcon.classList.add('carousel-control-prev-icon')
+    $nextIcon.classList.add('carousel-control-next-icon')
+    $prev.appendChild($prevIcon)
+    $next.appendChild($nextIcon)
+    $button.appendChild($prev)
+    $button.appendChild($next)
+    this.app.appendChild($button)
+    this.left = this.app.querySelector('#prev')
+    this.right = this.app.querySelector('#next')
+  }
   badgeCreate() {
-    const containerBadge = this.app.querySelector('.container__badge')
+    this.buttonCreate()
+    const containerBadge = document.createElement('div')
+    containerBadge.classList.add('container__badge')
     for (let i = 0; i < this.$slide.length; i++) {
       const badgeElement = document.createElement('div')
       badgeElement.id = 'badge'
@@ -38,6 +57,7 @@ class Slider {
       badgeElement.classList.add('badge')
       containerBadge.append(badgeElement)
     }
+    this.app.appendChild(containerBadge)
     this.badgeEvent()
   }
   badge(val) {
@@ -102,7 +122,7 @@ class Slider {
         }
       })
       this.$slide[index].classList.remove('active')
-      if (index+1 === this.slide.length) {
+      if (index+1 === this.$slide.length) {
         this.$slide[0].classList.add('active')
       } else {
         this.$slide[index+1].classList.add('active')
@@ -126,10 +146,10 @@ class Slider {
     }, this.timeout * 2)
   }
   init() {
-    this.handleLeft()
-    this.handleRight()
     this.badgeCreate()
     this.slide()
+    this.handleLeft()
+    this.handleRight()
     if (this.timeout !== 0) {
       this.autoInterval()
     }
