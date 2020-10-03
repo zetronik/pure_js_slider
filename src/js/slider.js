@@ -3,62 +3,97 @@ class Slider {
     this.app = document.getElementById(settings.app)
     this.$slider = this.app.querySelector('#slide')
     this.$slide = this.$slider.querySelectorAll('.slide .slide-item')
-    this.timeout = settings.timeout || 0
+    this.interval = settings.interval || 0
+    this.timeout = settings.timeout || 3000
+    this.index = 0
+  }
+  sliderEvent() {
+    this.app.addEventListener('click', (e) => {
+      this.slideActive()
+      switch (e.target.id) {
+        case 'badge':
+          this.badgeEvent(e.target.dataset.slide)
+          break
+        case 'prev':
+          this.handleLeft()
+          break
+        case 'prev-icon':
+          this.handleLeft()
+          break
+        case 'next':
+          this.handleRight()
+          break
+        case 'next-icon':
+          this.handleRight()
+          break
+      }
+    })
+  }
+  slideActive() {
+    this.$slide.forEach(s => {
+      if (s.classList.contains('active')) {
+        this.index = +s.dataset.slide
+      }
+    })
+  }
+  slideInit() {
+    this.badgeCreate()
+    this.$slide.forEach((s, i) => {
+      s.dataset.slide = `${i}`
+      if (s.classList.contains('active')) {
+        this.slider(i)
+        this.badge(i)
+      }
+    })
+    this.sliderEvent()
   }
   slide(val) {
-    if (!val) {
-      this.$slide.forEach((s, i) => {
-        if (s.classList.contains('active')) {
-          this.slider(i)
-          this.badge(i)
-        }
-      })
-    } else {
-      this.$slide.forEach((s) => {
-        if (s.classList.contains('active')) {
-          s.classList.remove('active')
-        }
-      })
-      this.$slide[val].classList.add('active')
-      this.slider(val)
-      this.badge(val)
-    }
+    this.$slide.forEach((s) => {
+      if (s.classList.contains('active')) {
+        s.classList.remove('active')
+      }
+    })
+    this.$slide[val].classList.add('active')
+    this.slider(val)
+    this.badge(val)
   }
   slider(val) {
     this.$slider.style.transform = `translate3d(${-100 * val}%, 0px, 0px)`
   }
   buttonCreate() {
-    const $button = document.createElement('div')
-    const $prev = document.createElement('div')
-    const $next = document.createElement('div')
-    const $prevIcon = document.createElement('div')
-    const $nextIcon = document.createElement('div')
+    const $button = this.create()
+    const $prev = this.create()
+    const $next = this.create()
+    const $prevIcon = this.create()
+    const $nextIcon = this.create()
     $button.id = 'button'
     $prev.id = 'prev'
     $next.id = 'next'
+    $prevIcon.id = 'prev-icon'
+    $nextIcon.id = 'next-icon'
     $prevIcon.classList.add('carousel-control-prev-icon')
     $nextIcon.classList.add('carousel-control-next-icon')
-    $prev.appendChild($prevIcon)
-    $next.appendChild($nextIcon)
-    $button.appendChild($prev)
-    $button.appendChild($next)
-    this.app.appendChild($button)
+    this.append($prev, $prevIcon)
+    this.append($next, $nextIcon)
+    this.append($button, $prev)
+    this.append($button, $next)
+    this.append(this.app, $button)
     this.left = this.app.querySelector('#prev')
     this.right = this.app.querySelector('#next')
   }
   badgeCreate() {
     this.buttonCreate()
-    const containerBadge = document.createElement('div')
+    const containerBadge = this.create()
     containerBadge.classList.add('container__badge')
     for (let i = 0; i < this.$slide.length; i++) {
-      const badgeElement = document.createElement('div')
+      const badgeElement = this.create()
       badgeElement.id = 'badge'
       badgeElement.dataset.slide = `${i}`
       badgeElement.classList.add('badge')
-      containerBadge.append(badgeElement)
+      this.append(containerBadge, badgeElement)
     }
-    this.app.appendChild(containerBadge)
-    this.badgeEvent()
+    this.append(this.app, containerBadge)
+    // this.badgeElement = this.app.querySelectorAll('.badge')
   }
   badge(val) {
     const badge = this.app.querySelectorAll('#badge')
@@ -69,88 +104,61 @@ class Slider {
     })
     badge[val].classList.add('badge_active')
   }
-  badgeEvent() {
-    const badgeElement = this.app.querySelectorAll('.badge')
-    badgeElement.forEach((badge) => {
-      badge.addEventListener('click', (e) => {
-        this.slide(e.target.dataset.slide)
-      })
-    })
+  badgeEvent(slide) {
+    this.setTimeout()
+    this.slide(slide)
   }
   handleRight() {
-    this.right.addEventListener('click',() => {
-      this.setTimeout()
-      let index = 0
-      this.$slide.forEach((s, i) => {
-        if (s.classList.contains('active')) {
-          index = i
-        }
-      })
-      this.$slide[index].classList.remove('active')
-      if (index+1 === this.$slide.length) {
-        this.$slide[0].classList.add('active')
-      } else {
-        this.$slide[index+1].classList.add('active')
-      }
-      this.slide()
-    })
+    this.setTimeout()
+    if (this.index + 1 === this.$slide.length) {
+      this.index = 0
+      this.slide(0)
+    } else {
+      this.slide(this.index + 1)
+    }
   }
   handleLeft() {
-    this.left.addEventListener('click',() => {
-      this.setTimeout()
-      let index = 0
-      this.$slide.forEach((s, i) => {
-        if (s.classList.contains('active')) {
-          index = i
-        }
-      })
-      this.$slide[index].classList.remove('active')
-      if (index === 0) {
-        this.$slide[this.$slide.length-1].classList.add('active')
-      } else {
-        this.$slide[index-1].classList.add('active')
-      }
-      this.slide()
-    })
+    this.setTimeout()
+    if (this.index === 0) {
+      this.slide(this.$slide.length-1)
+    } else {
+      this.slide(this.index - 1)
+    }
   }
   autoInterval() {
     const setSliderInterval = () => {
-      let index = 0
-      this.$slide.forEach((s, i) => {
-        if (s.classList.contains('active')) {
-          index = i
-        }
-      })
-      this.$slide[index].classList.remove('active')
-      if (index+1 === this.$slide.length) {
-        this.$slide[0].classList.add('active')
+      if (this.index + 1 >= this.$slide.length) {
+        this.index = 0
+        this.slide(0)
       } else {
-        this.$slide[index+1].classList.add('active')
+        this.slide(this.index += 1)
       }
-      this.slide()
     }
-    if (this.timeout !== 0) {
-      this.interval = setInterval(setSliderInterval, this.timeout)
+    if (this.interval !== 0) {
+      this.intervalId = setInterval(setSliderInterval, this.interval)
     }
   }
   stopInterval() {
-    clearInterval(this.interval)
-    this.interval = 0
+    clearInterval(this.intervalId)
+    this.intervalId = 0
   }
   setTimeout() {
     this.stopInterval()
     setTimeout(() => {
-      if (this.interval === 0) {
+      if (this.intervalId === 0) {
         this.autoInterval()
       }
-    }, this.timeout * 2)
+    }, this.timeout)
+  }
+  create() {
+    return document.createElement('div')
+  }
+  append(element, child) {
+    element.appendChild(child)
   }
   init() {
-    this.badgeCreate()
-    this.slide()
-    this.handleLeft()
-    this.handleRight()
-    if (this.timeout !== 0) {
+    this.slideInit()
+    if (this.interval !== 0) {
       this.autoInterval()
     }
   }
