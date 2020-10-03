@@ -11,45 +11,46 @@
 </head>
 <body>
   <div id="slider" class="container__slider">
-  <div id="slide" class="slide">
-    <div class="slide-item active">
-      <div class="item-text">
-        <span>Lorem ipsum dolor sit amet.</span>
+    <div id="slide" class="slide">
+      <div class="slide-item active">
+        <div class="item-text">
+          <span>Lorem ipsum dolor sit amet.</span>
+        </div>
+        <img src="https://picsum.photos/1200/650?random=1" alt="slide_1">
       </div>
-      <img src="https://picsum.photos/1200/650?random=1" alt="slide_1">
-    </div>
-    <div class="slide-item">
-      <div class="item-text">
-        <span>Lorem ipsum dolor sit amet.</span>
+      <div class="slide-item">
+        <div class="item-text">
+          <span>Lorem ipsum dolor sit amet.</span>
+        </div>
+        <img src="https://picsum.photos/1200/650?random=2" alt="slide_2">
       </div>
-      <img src="https://picsum.photos/1200/650?random=2" alt="slide_2">
-    </div>
-    <div class="slide-item">
-      <div class="item-text">
-        <span>Lorem ipsum dolor sit amet.</span>
+      <div class="slide-item">
+        <div class="item-text">
+          <span>Lorem ipsum dolor sit amet.</span>
+        </div>
+        <img src="https://picsum.photos/1200/650?random=3" alt="slide_3">
       </div>
-      <img src="https://picsum.photos/1200/650?random=3" alt="slide_3">
-    </div>
-    <div class="slide-item">
-      <div class="item-text">
-        <span>Lorem ipsum dolor sit amet.</span>
+      <div class="slide-item">
+        <div class="item-text">
+          <span>Lorem ipsum dolor sit amet.</span>
+        </div>
+        <img src="https://picsum.photos/1200/650?random=4" alt="slide_4">
       </div>
-      <img src="https://picsum.photos/1200/650?random=4" alt="slide_4">
-    </div>
-    <div class="slide-item">
+      <div class="slide-item">
       <div class="item-text">
         <span>Lorem ipsum dolor sit amet.</span>
       </div>
       <img src="https://picsum.photos/1200/650?random=5" alt="slide_5">
     </div>
   </div>
-</div>
+  </div>
 
   <script type="text/javascript" src="src/js/slider.js"></script>
   <script type="text/javascript">
     new Slider({
       app: 'slider',
-      timeout: 2000
+      interval: 2000,
+      timeout: 4000,
     }).init()
   </script>
 </body>
